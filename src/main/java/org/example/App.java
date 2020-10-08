@@ -1,30 +1,17 @@
 package org.example;
 
-/**
- * Hello world!
- *
- */
-public class App
-{
-    public static void main( String[] args )
-    {
+package org.example;
 
-        AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(ComponentScanConfig.class);
-        System.out.println( "Welcome Spring!" );
+import org.example.dao.AppUserDao;
+import org.example.model.AppUser;
+import org.springframework.context.annotation.AnnotationConfigApplicationContext;
 
+import java.util.Optional;
 
-        StudentManagement studentManagement = context.getBean(StudentManagement.class);
+public class App{
 
-        System.out.println("Name a new student:");
-        studentManagement.save(studentManagement.create());
-        System.out.println("and one more student:");
-        studentManagement.save(studentManagement.create());
-
-        System.out.println("Searching for student with id 1002");
-        System.out.println(studentManagement.find(1002));
-
-        System.out.println("And here is all students:");
-        studentManagement.findAll().forEach(s-> System.out.println(s));
-
-
-    }
+    AnnotationConfigApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class); //using for AnnotationConfigApplicationContext for load this class and used
+    AppUserDao dao = context.getBean("appUserDao", AppUserDao.class );
+    AppUser addAppUser = dao.save(new AppUser("hema", "hema@gmail.com","11111", "almhult"));
+    Optional<AppUser> user = dao.findById(addAppUser.getId());
+}
